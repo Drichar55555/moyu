@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ed">
+  <meta name="description" content="墨愚，一个关于哲学、历史、文学与社会的知识空间。不急于抵达答案，先学会认真提问。">
+  <title>墨愚 — 于墨色之间，见思想之光</title>
+  <link rel="icon" href="assets/moyu-wordmark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="activities.css">
+  <link rel="stylesheet" href="account.css">
+  <script defer src="account-core.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳转至正文</a>
+  <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-diagonal" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6 4h12v17l-6-4-6 4z"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 10v4m4-7v10m4-14v18m4-14v10m4-7v4"/></symbol>
+  </defs></svg>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="./index.html" class="brand" aria-label="墨愚首页"><span class="logo-type brand-wordmark">墨愚</span></a>
+      <nav aria-label="主导航" id="main-nav">
+        <a href="./index.html" class="active" aria-current="page">首页</a>
+        <a href="activities.html">活动</a>
+        <a href="#reading">读墨</a>
+        <a href="#podcasts">听愚</a>
+        <a href="#conversation">众说</a>
+        <a href="#about">关于墨愚</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button" id="search-open" aria-label="搜索文章"><svg><use href="#i-search"/></svg></button>
+        <span class="action-divider"></span>
+        <button class="shelf-button" id="shelf-open"><svg><use href="#i-bookmark"/></svg><span>我的书签</span></button>
+        <a href="account.html" class="account-link" data-account-link aria-label="登录或注册"><span class="account-avatar" aria-hidden="true">墨</span><span class="account-link-name">登录</span></a>
+        <button class="icon-button menu-toggle" id="menu-toggle" aria-label="展开导航" aria-expanded="false" aria-controls="main-nav"><svg><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section class="container activity-home" id="activities" aria-labelledby="hero-title">
+      <div class="edition-line"><span>墨愚 · 思想实验室</span><span class="english">QUESTIONS FOR TOMORROW</span><span>两场实验，等一个你的答案</span></div>
+      <div class="featured-event">
+        <div class="featured-copy"><span class="event-kicker"><span class="red-dot"></span> 本期活动 001 / 职业时光胶囊</span><h1 id="hero-title">有一天，<br>你的职业还在吗？</h1><p>把今天的判断，寄给未来。<br>为 8 种职业排一个告别的次序，<br>让时间来回应，而不是让焦虑先作答。</p><div class="event-cta"><a href="capsule.html" class="button button-dark">封存我的预测 <svg><use href="#i-arrow"/></svg></a><span>约 3 分钟 · 交互 Demo</span></div><p class="event-fine">职业排序 / 众人预测榜 / 邮件提醒意愿</p></div>
+        <a class="capsule-poster" href="capsule.html" aria-label="参与职业时光胶囊"><span class="poster-top english">A LETTER TO THE FUTURE <span>NO. 001</span></span><div class="poster-orbit" aria-hidden="true"></div><div class="paper-envelope"><span class="envelope-label">致：未来的我们</span><div class="envelope-lines"><span>收银员</span><span>翻译</span><span>程序员</span><span>……</span></div><span class="envelope-stamp">待时间<br>启封</span><span class="envelope-date english">SEALED TODAY. OPENED TOMORROW.</span></div><span class="poster-bottom">未来没有标准答案。<svg><use href="#i-diagonal"/></svg></span></a>
+      </div>
+      <a class="secondary-event" href="generations.html"><span class="event-index">002</span><div><span class="eyebrow">另一场正在发生的实验 / 代际回声</span><h2>如果换一个年代长大，你会怎么回答？</h2><p>留下你的答案，猜一猜另一个年龄段的多数选择。</p></div><div class="generation-mini" aria-hidden="true"><span>10 · 20</span><span>90 · 00</span><span>≤ 80</span></div><span class="secondary-cta">进入代际实验 <svg><use href="#i-arrow"/></svg></span></a>
+      <div class="manifesto-strip"><span class="strip-mark">问</span><p>不贩卖确定的答案，只邀请你一起，<strong>把问题问得更深一点。</strong></p><button class="text-link" id="replay-intro">重看序章 ↺</button></div>
+    </section>
+
+    <section class="reading-section container section" id="reading" aria-labelledby="reading-title">
+      <div class="section-heading"><div><span class="eyebrow english">01 / THE READING ROOM</span><h2 id="reading-title">读墨<span>字里行间，另一个世界</span></h2></div><button class="text-link" id="all-articles">浏览全部文章 <svg><use href="#i-arrow"/></svg></button></div>
+      <div class="filter-row"><div class="filters" role="group" aria-label="文章分类"><button class="selected" data-filter="全部" aria-pressed="true">全部</button><button data-filter="哲学" aria-pressed="false">哲学思辨</button><button data-filter="社会" aria-pressed="false">社会观察</button><button data-filter="文学" aria-pressed="false">文学随笔</button><button data-filter="历史" aria-pressed="false">历史回望</button></div><span class="filter-note" id="article-count" aria-live="polite">本期选读 · 03 篇</span></div>
+      <div class="article-grid" id="article-grid"></div>
+      <noscript><p>启用 JavaScript 可阅读文章、筛选分类和使用书签；下方品牌介绍仍可正常浏览。</p></noscript>
+    </section>
+
+    <section class="quote-section container" aria-label="本期一问"><span class="eyebrow">留 白 · 一 问</span><blockquote>如果不必成为别人眼中的自己，<br>你想怎样度过这一生？</blockquote><span class="quote-source">不急着回答。带着它，走一会儿。</span><span class="quote-seal" aria-hidden="true">愚<br>问</span></section>
+
+    <section class="podcast-section" id="podcasts" aria-labelledby="podcast-title"><div class="container podcast-inner">
+      <div class="podcast-intro"><span class="eyebrow english">02 / VOICES & PAUSES</span><h2 id="podcast-title">听愚</h2><p class="podcast-tagline">有些思想，<br>适合慢慢听。</p><p>在声音的停顿里，听见另一种可能。<br>关于生活，也关于生活之外。</p><span class="sample-label">播客筹备中 · 先读文字样稿</span></div>
+      <div class="podcast-content"><div class="record-art" aria-hidden="true"><div class="record"><div class="record-label"><span class="logo-type record-wordmark">墨愚</span><span>墨愚 · 声音札记</span></div></div><span class="record-caption">一席闲谈 / 一点回响</span></div><div class="episode-list"><a href="#article=podcast-slow" class="episode"><span class="episode-number">001</span><div><span class="eyebrow">生活哲学 / 文字样稿</span><h3>我们为什么，不敢慢下来？</h3><p>从「有用」的焦虑，聊到无所事事的自由</p></div><svg><use href="#i-arrow"/></svg></a><a href="#article=podcast-city" class="episode"><span class="episode-number">002</span><div><span class="eyebrow">城市与人 / 文字样稿</span><h3>在人群里，重新学习独处</h3><p>一个人走路的时候，我们在想些什么</p></div><svg><use href="#i-arrow"/></svg></a></div></div>
+    </div></section>
+
+    <section class="conversation-section container section" id="conversation" aria-labelledby="conversation-title"><div class="section-heading"><div><span class="eyebrow english">03 / A QUESTION IN COMMON</span><h2 id="conversation-title">众说<span>让不同的声音，坐在一起</span></h2></div><span class="topic-badge">本期议题</span></div><div class="conversation-grid"><div><span class="eyebrow">关于个体与时代</span><h3>当所有人都在追求「有用」，<br>我们还需要「无用」之美吗？</h3><p>一首诗，一次漫无目的的散步，一场没有结论的谈话。<br>那些无法被量化的事，究竟在滋养什么？</p><a href="#article=useless" class="text-link">先读一篇，再想一想 <svg><use href="#i-arrow"/></svg></a></div><div class="opinion-panel"><p>此刻，你更接近哪一种想法？</p><div class="opinion-options" role="group" aria-label="记录你的观点"><button data-opinion="need" aria-pressed="false"><span>需要，意义不止一种尺度</span><svg><use href="#i-diagonal"/></svg></button><button data-opinion="balance" aria-pressed="false"><span>我想在现实与理想间寻找平衡</span><svg><use href="#i-diagonal"/></svg></button><button data-opinion="thinking" aria-pressed="false"><span>还没想好，想再听听</span><svg><use href="#i-diagonal"/></svg></button></div><p class="opinion-feedback" id="opinion-feedback" aria-live="polite">没有标准答案。选择仅保存在此设备。</p></div></div></section>
+
+    <section class="about-section container" id="about" aria-labelledby="about-title"><div class="about-brand"><span class="logo-type brand-wordmark">墨愚</span><span class="english">A LITTLE INK. A LITTLE WONDER.</span></div><div class="about-copy"><span class="eyebrow">关于墨愚</span><h2 id="about-title">以墨为言，以愚为始。</h2><p>「墨」是记录，也是表达；「愚」不是无知，而是不以已知自满。<br>我们想做一处小小的知识空间，让哲学走出书斋，让历史照进日常，<br>让每一个愿意提问的人，都能在这里找到一张椅子。</p><button class="text-link" id="reading-list">带走本期延伸书单 <svg><use href="#i-arrow"/></svg></button></div></section>
+  </main>
+
+  <footer class="site-footer container"><span>© <span id="year">2026</span> 墨愚 MOYU</span><span>保持好奇，允许未知。</span><div><button id="credits-open">素材与说明</button><a href="#main">回到页首 ↑</a></div></footer>
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <dialog class="intro" id="intro" aria-label="墨愚开场序章"><div class="intro-image"></div><div class="intro-shade"></div><span class="intro-kicker">墨愚 · 序章</span><div class="intro-poem"><p>于无声处，</p><p>听见思想的回响。</p><span>在历史与此刻之间，相逢。</span></div><button id="skip-intro">跳过序章 <svg><use href="#i-arrow"/></svg></button><div class="intro-bottom"><span>一处安放好奇心的地方</span><span class="english">MOYU / A SPACE FOR THOUGHT</span></div><div class="intro-progress"></div></dialog>
+
+  <dialog class="search-dialog" id="search-dialog" aria-labelledby="search-title"><div class="dialog-header"><h2 id="search-title">在墨愚，寻找一个问题</h2><button class="icon-button" data-close aria-label="关闭搜索"><svg><use href="#i-close"/></svg></button></div><label for="search-input">搜索标题、主题或关键词</label><div class="search-input-wrap"><svg><use href="#i-search"/></svg><input type="search" id="search-input" placeholder="试试「自由」「城市」「历史」" autocomplete="off"></div><p class="search-meta" id="search-meta" role="status"></p><div id="search-results" class="search-results"></div></dialog>
+  <dialog class="reader-dialog" id="reader-dialog" aria-labelledby="reader-title"><div class="dialog-header"><span class="eyebrow">墨 愚 / 阅 读 室</span><button class="icon-button" data-close aria-label="关闭文章"><svg><use href="#i-close"/></svg></button></div><article id="reader-content"></article><div class="reader-actions"><button class="button button-dark" id="save-article"><svg><use href="#i-bookmark"/></svg><span>加入书签</span></button><button class="text-link" id="copy-article">复制文章链接 <svg><use href="#i-arrow"/></svg></button></div></dialog>
+  <dialog class="shelf-dialog" id="shelf-dialog" aria-labelledby="shelf-title"><div class="dialog-header"><h2 id="shelf-title">我的书签</h2><button class="icon-button" data-close aria-label="关闭书签"><svg><use href="#i-close"/></svg></button></div><p>留下一些文字，等一个适合重读的时刻。<br><small>书签仅保存在当前浏览器，不会同步到其他设备。</small></p><div id="shelf-results" class="search-results"></div></dialog>
+  <dialog class="credits-dialog" id="reading-list-dialog" aria-labelledby="reading-list-title"><div class="dialog-header"><h2 id="reading-list-title">创刊号 · 延伸书单</h2><button class="icon-button" data-close aria-label="关闭书单"><svg><use href="#i-close"/></svg></button></div><p><strong>《庄子》</strong><br>从《逍遥游》《人间世》开始，理解「无用」的不同语境。</p><p><strong>《乡土中国》 · 费孝通</strong><br>从熟悉的关系出发，思考人与社会。</p><p><strong>《看不见的城市》 · 伊塔洛·卡尔维诺</strong><br>在文学的城市中，重新观察生活的城市。</p><p><strong>《瓦尔登湖》 · 亨利·戴维·梭罗</strong><br>关于独处、日常与生活方式的记录。</p><p>这是阅读建议，不是书籍下载。请通过图书馆或正规书店获取原著。</p><button class="button button-dark" id="download-reading-list">保存书单为文本 <svg><use href="#i-arrow"/></svg></button><p id="download-feedback" role="status"></p></dialog>
+  <dialog class="credits-dialog" id="credits-dialog" aria-labelledby="credits-title"><div class="dialog-header"><h2 id="credits-title">素材与说明</h2><button class="icon-button" data-close aria-label="关闭说明"><svg><use href="#i-close"/></svg></button></div><p>这是墨愚品牌官网的可交互静态版本。文章与播客文字为网站演示样稿，活动中的其他参与者及统计均为明确标注的模拟数据，不代表真实调查。邮件提醒未接入发送服务。</p><p>品牌标识、历史配图及六款字体来自你提供的素材。旧照片用于视觉参考，不据此断定具体拍摄时间或事件。上线前请确认图片、品牌与字体的公开使用许可。</p><p>山野与城市照片来自 Unsplash，图片已保存至本地。网站不使用统计追踪，不上传本地记录。</p><p>字体分工：YuFan 仅保留为 Logo 专用字体；页面标题、引言、正文及按钮均使用站酷仓耳渔阳体。W02 用于正文，W03 用于导航与标题，W04 用于强调。</p></dialog>
+</body>
+</html>

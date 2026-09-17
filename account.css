@@ -1,0 +1,38 @@
+@charset "UTF-8";
+.account-link{display:flex;align-items:center;gap:8px;min-height:44px;flex-shrink:0;font-size:12px;padding:0 3px}
+.verification-email{display:flex;gap:10px;align-items:stretch}.verification-email input{flex:1;min-width:0}.verification-email button{border:1px solid var(--line);padding:8px 12px;font-size:12px;white-space:nowrap;min-width:100px}.mail-unavailable{font-size:12px;line-height:1.8;border-left:2px solid var(--red);padding:10px 12px;background:var(--surface);color:var(--red);margin-top:14px}
+.login-methods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 22px}.login-methods button{min-height:46px;padding:9px 6px;border:1px solid var(--line);font-size:12px}.login-methods button[aria-pressed=true]{border-color:var(--red);color:var(--red);background:var(--surface)}
+.account-avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;overflow:hidden;font-size:13px;line-height:1;flex-shrink:0;background:var(--ink);color:var(--paper)}
+.account-avatar img{width:100%;height:100%;object-fit:cover}
+.tone-ink{background:#292d28;color:#f5f3ed}.tone-clay{background:#934c3d;color:#fff}.tone-moss{background:#4e624b;color:#fff}.tone-sand{background:#c4b59b;color:#262924}
+.account-link-name{max-width:82px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.event-header:has(.account-link){gap:26px}.event-header:has(.account-link)>.english{display:none}.event-header>.account-link{margin-left:auto}
+.personal-result-heading .shared-banner,.personal-result-heading .result-eyebrow{overflow-wrap:anywhere}
+.account-header{width:min(1120px,calc(100% - 48px));margin:auto;min-height:90px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.account-main{width:min(1020px,calc(100% - 48px));margin:65px auto 45px;display:grid;grid-template-columns:1fr 1.1fr;gap:80px;align-items:start}
+.account-intro{padding-top:26px}.account-intro h1{font-size:42px;font-weight:500;letter-spacing:1px;line-height:1.6;margin:20px 0}.account-intro p{font-size:15px;color:var(--muted);line-height:2}
+.account-intro .account-demo{font-size:12px;line-height:1.9;border-top:1px solid var(--line);padding-top:24px;margin-top:35px;max-width:340px}
+.account-card{border:1px solid var(--line);padding:30px;background:var(--paper);min-width:0}
+.account-tabs{display:flex;gap:25px;margin-bottom:26px;border-bottom:1px solid var(--line)}.account-tabs button{font-size:14px;min-height:44px;padding:6px 8px;border-bottom:2px solid transparent}.account-tabs button[aria-pressed=true]{color:var(--red);border-color:var(--red)}
+.account-card h2{font-size:24px;font-weight:500;line-height:1.6;margin:0 0 23px}
+.account-card label:not(.account-consent):not(.avatar-upload){display:block;font-size:13px;margin:19px 0 9px}
+.account-card input:not([type=checkbox]):not([type=file]){width:100%;min-width:0;min-height:48px;border:1px solid var(--line);padding:10px 12px;background:transparent;color:var(--ink);border-radius:0;font-size:16px}
+.account-card .field-hint{font-size:11px;color:var(--muted);line-height:1.8;margin-top:7px}
+.password-field{display:flex;border:1px solid var(--line)}.password-field input{border:0!important}.password-field button{font-size:12px;padding:0 14px;min-height:46px;white-space:nowrap}
+.account-consent{display:flex;align-items:flex-start;gap:10px;font-size:12px;line-height:1.9;margin-top:22px;color:var(--muted)}.account-consent input{width:18px;height:18px;flex-shrink:0;accent-color:var(--red);margin-top:4px}
+.account-submit{width:100%;margin-top:14px;min-height:50px}.account-card [disabled]{cursor:not-allowed;opacity:.5}
+#account-feedback{font-size:13px;line-height:1.8;color:var(--muted);margin-top:14px}#account-feedback:empty{display:none}#account-feedback.is-error{color:var(--red)}
+.wechat-login{margin-top:24px;border-top:1px solid var(--line);padding-top:20px}.wechat-login-button{width:100%;border:1px solid var(--line);min-height:48px;font-size:14px;display:flex;justify-content:center;align-items:center;gap:12px}.wechat-login-button span{font-size:10px}
+.wechat-login details,.account-privacy{font-size:12px;color:var(--muted);line-height:1.9}.wechat-login summary,.account-privacy summary{cursor:pointer;min-height:44px;align-content:center}.wechat-login details p,.account-privacy p{margin-bottom:12px}
+.account-guest{font-size:12px;min-height:44px;margin-top:12px}.account-footer{text-align:center;color:var(--muted);font-size:11px;padding:25px}
+.profile-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.profile-heading h2{font-size:22px;margin-top:8px}.profile-heading .text-link{white-space:nowrap;font-size:11px}
+.avatar-editor{display:flex;align-items:center;gap:24px;margin:8px 0 20px}.profile-avatar{width:88px;height:88px;font-size:36px}.avatar-upload{display:inline-flex;align-items:center;min-height:44px;border-bottom:1px solid var(--ink);font-size:14px;cursor:pointer}
+.avatar-file{display:block;font-size:11px;max-width:230px;margin-top:8px}.avatar-editor .text-link{font-size:11px;min-height:36px}
+.avatar-tones{display:flex;gap:14px;margin:18px 0 26px}.tone-choice{width:44px;height:44px;border-radius:50%;font-size:17px}.tone-choice[aria-pressed=true]{outline:2px solid var(--red);outline-offset:4px}
+.profile-handle{font-size:12px;color:var(--muted);margin-top:16px}.account-privacy{border-top:1px solid var(--line);margin-top:20px;padding-top:8px}
+.avatar-file{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.avatar-editor:has(.avatar-file:focus-visible) .avatar-upload{outline:2px solid var(--red);outline-offset:4px}
+@media(max-width:1150px){.header-actions .account-link-name{display:none}.header-inner:has(.account-link){gap:20px}.site-header nav{gap:20px}}
+@media(max-width:800px){.event-header:has(.account-link){gap:16px}.event-header .account-link-name{display:none}.account-main{gap:35px}.account-intro h1{font-size:32px}.account-card{padding:24px}}
+@media(max-width:620px){.account-link{gap:0;padding:0}.header-actions{gap:3px}.account-avatar{width:28px;height:28px}.event-header:has(.account-link){gap:12px}.event-header nav{gap:12px!important}.event-header .account-link{margin-left:0}.event-header .brand{width:86px}.event-header nav a{font-size:10px}.account-header{min-height:75px;width:calc(100% - 40px)}.account-header .brand{width:110px}.account-main{width:calc(100% - 40px);grid-template-columns:1fr;gap:24px;margin:25px auto}.account-intro{padding:0}.account-intro h1{font-size:29px;margin:12px 0}.account-intro h1 br{display:none}.account-intro>p:not(.account-demo){display:none}.account-intro .account-demo{max-width:none;margin-top:15px;padding-top:13px;font-size:11px}.account-card{padding:22px 19px}.account-card h2{font-size:22px}.profile-heading{gap:10px}.profile-heading h2{font-size:20px}.avatar-editor{gap:18px}.profile-avatar{width:76px;height:76px;font-size:30px}.avatar-file{max-width:170px}.account-tabs{margin-bottom:22px}.account-footer{padding:15px}}
+@media(max-width:620px){.account-intro h1 br{display:initial}}

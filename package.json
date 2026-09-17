@@ -1,0 +1,22 @@
+{
+  "name": "moyu-website",
+  "private": true,
+  "version": "0.2.0",
+  "description": "墨愚官网、活动 Demo 与邮箱验证账号服务",
+  "engines": {"node": ">=22.16.0"},
+  "scripts": {
+    "test:motion": "node tests/rank-motion.test.cjs",
+    "test:directory": "node tests/activity-directory.test.cjs",
+    "start": "node --env-file-if-exists=.env server.cjs",
+    "test": "node tests/activity-data.test.cjs",
+    "test:browser": "node tests/browser.test.cjs",
+    "test:share": "node tests/share.test.cjs",
+    "test:account": "node tests/server-auth.test.cjs && node tests/account.test.cjs && node tests/login-methods.test.cjs && node tests/account-return.test.cjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.58.0"
+  },
+  "dependencies": {
+    "nodemailer": "^10.0.3"
+  }
+}

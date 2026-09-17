@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "墨愚 · 本地预览",
+			"type": "shell",
+			"command": "npm --prefix /Users/zhanghao/moyu start",
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}
