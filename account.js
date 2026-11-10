@@ -9,7 +9,7 @@
   let mode='login', loginMethod='password', busy=false, avatar='',tone='ink',dirty=false;
   let challengeId='',challengeEmail='',nextSendAt=0,cooldownTimer;
   const home=new URL('index.html',location.href);
-  const allowed=['index.html','activities.html','capsule.html','generations.html'];
+  const allowed=['index.html','activities.html','capsule.html','generations.html','courses.html','course.html','checkout.html','orders.html'];
   let returnURL=home;
   try {const target=new URL(new URLSearchParams(location.search).get('returnTo')||'index.html',location.href);if(target.origin===home.origin&&(target.pathname===new URL('./',home).pathname||allowed.some(p=>target.pathname===new URL(p,home).pathname)))returnURL=target;}catch{/* Ignore unsafe return URLs. */}
   // One navigation only: the homepage consumes and removes this marker on arrival.

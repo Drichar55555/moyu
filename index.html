@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="activities.css">
   <link rel="stylesheet" href="account.css">
+  <link rel="stylesheet" href="courses.css">
   <script defer src="account-core.js"></script>
   <script defer src="app.js"></script>
 </head>
@@ -31,6 +32,7 @@
       <nav aria-label="主导航" id="main-nav">
         <a href="./index.html" class="active" aria-current="page">首页</a>
         <a href="activities.html">活动</a>
+        <a href="courses.html">课程</a>
         <a href="#reading">读墨</a>
         <a href="#podcasts">听愚</a>
         <a href="#conversation">众说</a>
@@ -57,6 +59,10 @@
       <div class="manifesto-strip"><span class="strip-mark">问</span><p>不贩卖确定的答案，只邀请你一起，<strong>把问题问得更深一点。</strong></p><button class="text-link" id="replay-intro">重看序章 ↺</button></div>
     </section>
 
+    <section class="container course-home-entry" aria-labelledby="course-home-title">
+      <div><span class="eyebrow">墨愚 · 课程预览</span><h2 id="course-home-title">把一个好问题，学得更深一点。</h2><p>从阅读、思辨到表达，找到你想深入的那一门课。</p></div>
+      <a class="button button-dark" href="courses.html">浏览课程 <span aria-hidden="true">↗</span></a>
+    </section>
     <section class="reading-section container section" id="reading" aria-labelledby="reading-title">
       <div class="section-heading"><div><span class="eyebrow english">01 / THE READING ROOM</span><h2 id="reading-title">读墨<span>字里行间，另一个世界</span></h2></div><button class="text-link" id="all-articles">浏览全部文章 <svg><use href="#i-arrow"/></svg></button></div>
       <div class="filter-row"><div class="filters" role="group" aria-label="文章分类"><button class="selected" data-filter="全部" aria-pressed="true">全部</button><button data-filter="哲学" aria-pressed="false">哲学思辨</button><button data-filter="社会" aria-pressed="false">社会观察</button><button data-filter="文学" aria-pressed="false">文学随笔</button><button data-filter="历史" aria-pressed="false">历史回望</button></div><span class="filter-note" id="article-count" aria-live="polite">本期选读 · 03 篇</span></div>

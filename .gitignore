@@ -5,3 +5,7 @@ test-results/
 .env.*
 !.env.example
 .data/
+*.pem
+*.key
+*.p12
+*.pfx

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ed"><title>购买记录 — 墨愚</title>
+  <link rel="icon" href="assets/moyu-wordmark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="account.css"><link rel="stylesheet" href="courses.css">
+  <script defer src="account-core.js"></script><script defer src="payment-client.js"></script><script defer src="orders.js"></script>
+</head>
+<body class="course-page">
+  <a class="skip-link" href="#main">跳转至购买记录</a>
+  <header class="course-header container">
+    <a class="brand" href="index.html" aria-label="墨愚首页"><span class="logo-type brand-wordmark">墨愚</span></a>
+    <nav aria-label="主导航"><a href="courses.html">全部课程</a><a href="orders.html" aria-current="page">购买记录</a></nav>
+    <a href="account.html" class="account-link" data-account-link aria-label="登录或注册"><span class="account-avatar" aria-hidden="true">墨</span><span class="account-link-name">登录</span></a>
+  </header>
+  <main id="main" class="container checkout-main" tabindex="-1">
+    <div class="checkout-heading"><h1>购买记录</h1></div>
+    <p id="orders-feedback" class="payment-feedback" role="status" aria-live="polite"></p>
+    <a id="orders-login" class="button button-dark" href="account.html?returnTo=orders.html" hidden>登录查看</a>
+    <button id="orders-refresh" class="text-link" type="button">刷新记录</button>
+    <div id="orders-list"></div>
+    <noscript><p>请启用 JavaScript 后刷新，以读取购买记录。</p></noscript>
+  </main>
+</body>
+</html>

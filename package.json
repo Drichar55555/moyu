@@ -5,6 +5,8 @@
   "description": "墨愚官网、活动 Demo 与邮箱验证账号服务",
   "engines": {"node": ">=22.16.0"},
   "scripts": {
+    "test:payments": "node tests/payment-providers.test.cjs && node tests/payments.test.cjs && node tests/checkout.test.cjs",
+    "test:courses": "node tests/courses.test.cjs",
     "test:motion": "node tests/rank-motion.test.cjs",
     "test:directory": "node tests/activity-directory.test.cjs",
     "start": "node --env-file-if-exists=.env server.cjs",
@@ -17,6 +19,8 @@
     "playwright": "^1.58.0"
   },
   "dependencies": {
+    "alipay-sdk": "^4.14.0",
+    "qrcode": "^1.5.4",
     "nodemailer": "^10.0.3"
   }
 }

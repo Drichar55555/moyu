@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ed">
+  <meta name="description" content="墨愚课程：哲学思辨、文学阅读、历史人文、写作表达与社会观察。">
+  <title>课程 — 墨愚</title>
+  <link rel="icon" href="assets/moyu-wordmark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="account.css">
+  <link rel="stylesheet" href="courses.css">
+  <script defer src="account-core.js"></script>
+  <script defer src="course-data.js"></script>
+  <script defer src="courses.js"></script>
+</head>
+<body class="course-page">
+  <a class="skip-link" href="#main">跳转至课程列表</a>
+  <header class="course-header container">
+    <a class="brand" href="index.html" aria-label="墨愚首页"><span class="logo-type brand-wordmark">墨愚</span></a>
+    <nav aria-label="主导航"><a href="index.html">首页</a><a href="courses.html" aria-current="page">课程</a><a href="orders.html">购买记录</a></nav>
+    <a href="account.html" class="account-link" data-account-link aria-label="登录或注册"><span class="account-avatar" aria-hidden="true">墨</span><span class="account-link-name">登录</span></a>
+  </header>
+  <main id="main" class="container catalog-main" tabindex="-1">
+    <div class="catalog-heading"><h1>课程</h1></div>
+    <section class="catalog-controls" aria-label="筛选课程">
+      <div id="course-filters" class="course-filters" role="group" aria-label="课程分类"></div>
+      <label class="catalog-search" for="course-search"><span>搜索课程</span><input id="course-search" type="search" placeholder="搜索标题或关键词" autocomplete="off"></label>
+    </section>
+    <div class="catalog-list-heading"><p id="course-count" role="status" aria-live="polite"></p></div>
+    <div id="course-grid" class="course-grid"></div>
+    <div id="course-empty" class="course-empty" hidden><h2>暂时没有匹配的课程。</h2><p class="course-muted">试试其他关键词，或回到全部课程。</p><button id="clear-course-filters" class="button button-dark" type="button">查看全部课程</button></div>
+    <noscript><p class="course-notice">请启用 JavaScript 后刷新，以加载课程。</p></noscript>
+  </main>
+</body>
+</html>

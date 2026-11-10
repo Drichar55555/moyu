@@ -6,6 +6,8 @@ const {DatabaseSync} = require('node:sqlite');
 const {randomBytes,randomInt,randomUUID,createHash,scrypt:rawScrypt,timingSafeEqual} = require('node:crypto');
 const {promisify} = require('node:util');
 const nodemailer = require('nodemailer');
+const {configuredProviders}=require('./payment-providers.cjs');
+const {createPayments}=require('./payments.cjs');
 const scrypt = promisify(rawScrypt);
 const ROOT=__dirname;
 const digest=s=>createHash('sha256').update(s).digest('hex');
@@ -25,7 +27,8 @@ function smtpSender(env){
   };
 }
 // Tests inject an in-memory mail sink; no HTTP endpoint exposes verification codes.
-function createMoyuServer({dbPath=path.join(ROOT,'.data','moyu.sqlite'),sendMail=smtpSender(process.env),publicOrigin=process.env.PUBLIC_ORIGIN||'',now=Date.now}={}){
+function createMoyuServer({dbPath=path.join(ROOT,'.data','moyu.sqlite'),sendMail=smtpSender(process.env),publicOrigin=process.env.PUBLIC_ORIGIN||'',now=Date.now,
+  paymentProviders,enabledCourseIds=(process.env.PAYMENT_COURSE_IDS||'').split(',').map(id=>id.trim()).filter(Boolean)}={}){
   if(dbPath!==':memory:')fs.mkdirSync(path.dirname(dbPath),{recursive:true,mode:0o700});
   const db=new DatabaseSync(dbPath);
   if(dbPath!==':memory:')fs.chmodSync(dbPath,0o600);
@@ -36,6 +39,7 @@ function createMoyuServer({dbPath=path.join(ROOT,'.data','moyu.sqlite'),sendMail
     CREATE TABLE IF NOT EXISTS limits(key TEXT PRIMARY KEY,count INTEGER NOT NULL,reset INTEGER NOT NULL);`);
   // Preserve existing accounts and pending registration codes during upgrade.
   if(!db.prepare('PRAGMA table_info(challenges)').all().some(column=>column.name==='purpose'))db.exec("ALTER TABLE challenges ADD COLUMN purpose TEXT NOT NULL DEFAULT 'register'");
+  const payments=createPayments({db,providers:paymentProviders??configuredProviders(process.env,publicOrigin),enabledCourseIds,now});
   function limit(key,max,windowMs){
     const t=now(),old=db.prepare('SELECT * FROM limits WHERE key=?').get(key);
     if(old&&old.reset>t){if(old.count>=max)throw failure(429,'操作过于频繁，请稍后再试。');db.prepare('UPDATE limits SET count=count+1 WHERE key=?').run(key);}
@@ -63,10 +67,14 @@ function createMoyuServer({dbPath=path.join(ROOT,'.data','moyu.sqlite'),sendMail
     const token=randomBytes(32).toString('hex');db.prepare('INSERT INTO sessions VALUES(?,?,?)').run(digest(token),userId,now()+7*86400*1000);res.setHeader('Set-Cookie',sessionCookie(token));
   }
   function json(res,status,body){res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(body));}
+  async function rawBody(req,max=220000){
+    let size=0;const chunks=[];for await(const chunk of req){size+=chunk.length;if(size>max)throw failure(413,'请求内容过大。');chunks.push(chunk);}
+    return Buffer.concat(chunks).toString('utf8');
+  }
   async function body(req){
     if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))throw failure(415,'请求格式不正确。');
-    let size=0;const chunks=[];for await(const chunk of req){size+=chunk.length;if(size>220000)throw failure(413,'请求内容过大。');chunks.push(chunk);}
-    try{const data=JSON.parse(Buffer.concat(chunks).toString());if(!data||typeof data!=='object'||Array.isArray(data))throw new Error();return data;}catch{throw failure(400,'请求内容无法读取。');}
+    const raw=await rawBody(req);
+    try{const data=JSON.parse(raw);if(!data||typeof data!=='object'||Array.isArray(data))throw new Error();return data;}catch{throw failure(400,'请求内容无法读取。');}
   }
   const server=http.createServer(async(req,res)=>{
     res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','same-origin');res.setHeader('X-Frame-Options','DENY');
@@ -78,7 +86,37 @@ function createMoyuServer({dbPath=path.join(ROOT,'.data','moyu.sqlite'),sendMail
       const url=new URL(req.url,origin);
       if(url.pathname.startsWith('/api/')){
         clean();const ip=req.socket.remoteAddress||'unknown';
+        const notify=url.pathname.match(/^\/api\/payments\/notify\/(wechat|alipay)$/);
+        if(notify&&req.method==='POST'){
+          // Provider callbacks cannot carry a browser Origin. Only these exact paths bypass CSRF; signature checks remain mandatory.
+          const name=notify[1],type=name==='wechat'?'application/json':'application/x-www-form-urlencoded';
+          try{
+            if((req.headers['content-type']||'').split(';')[0].trim().toLowerCase()!==type)throw failure(415,'支付通知格式不正确。');
+            await payments.notify(name,await rawBody(req,65536),req.headers);
+            if(name==='wechat'){res.writeHead(204);res.end();}
+            else{res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8'});res.end('success');}
+          }catch(error){
+            console.error(`[payments] ${name} notify rejected (${error.status||500})`);
+            if(name==='alipay'){res.writeHead(error.status||500,{'Content-Type':'text/plain; charset=utf-8'});res.end('failure');}
+            else json(res,error.status||500,{code:'FAIL',message:'支付通知未通过校验。'});
+          }
+          return;
+        }
         if(req.method!=='GET'&&req.headers.origin!==origin)throw failure(403,'请求来源无效，请从本站重新操作。');
+        if(req.method==='GET'&&url.pathname==='/api/payments/config'){
+          json(res,200,payments.config(url.searchParams.get('courseId')));return;
+        }
+        if(url.pathname==='/api/orders'||url.pathname==='/api/purchases'||/^\/api\/orders\/[^/]+(?:\/close)?$/.test(url.pathname)){
+          const user=session(req);if(!user)throw failure(401,'请先登录，再购买或查询课程。');
+          limit(`payment:${user.id}`,120,60000);
+          if(req.method==='GET'&&url.pathname==='/api/orders'){json(res,200,{orders:payments.list(user.id)});return;}
+          if(req.method==='GET'&&url.pathname==='/api/purchases'){json(res,200,{purchases:payments.purchases(user.id)});return;}
+          if(req.method==='POST'&&url.pathname==='/api/orders'){json(res,201,{order:await payments.create(user.id,await body(req))});return;}
+          const match=url.pathname.match(/^\/api\/orders\/(MY[a-f0-9]{30})(\/close)?$/);
+          if(match&&req.method==='GET'&&!match[2]){json(res,200,{order:await payments.read(user.id,match[1])});return;}
+          if(match&&req.method==='POST'&&match[2]){await body(req);json(res,200,{order:await payments.close(user.id,match[1])});return;}
+          throw failure(404,'订单接口不存在。');
+        }
         if(req.method==='GET'&&url.pathname==='/api/auth/session'){json(res,200,{user:publicUser(session(req)),emailRegistrationAvailable:Boolean(sendMail)});return;}
         if(req.method==='POST'&&url.pathname==='/api/auth/code'){
           const data=await body(req);const email=normalize(data.email),purpose=data.purpose??'register';
@@ -144,13 +182,13 @@ function createMoyuServer({dbPath=path.join(ROOT,'.data','moyu.sqlite'),sendMail
       }
       if(!['GET','HEAD'].includes(req.method))throw failure(405,'不支持此操作。');
       const pathname=decodeURIComponent(url.pathname);const relative=pathname==='/'?'index.html':pathname.slice(1);
-      const pages=new Set(['index.html','activities.html','capsule.html','generations.html','account.html','styles.css','activities.css','account.css','app.js','activities.js','activity-data.js','account.js','account-core.js']);
+      const pages=new Set(['index.html','activities.html','capsule.html','generations.html','account.html','courses.html','course.html','checkout.html','orders.html','payment-client.js','checkout.js','orders.js','courses.css','course-data.js','courses.js','styles.css','activities.css','account.css','app.js','activities.js','activity-data.js','account.js','account-core.js']);
       if(!pages.has(relative)&&!/^assets\/[\p{L}\p{N}_. /-]+$/u.test(relative))throw failure(404,'页面不存在。');
       const file=path.resolve(ROOT,relative);if(!file.startsWith(ROOT+path.sep)||relative.split('/').some(s=>s.startsWith('.')))throw failure(404,'页面不存在。');
       const stat=await fs.promises.stat(file).catch(()=>null);if(!stat?.isFile())throw failure(404,'页面不存在。');
       const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.ttf':'font/ttf'}[path.extname(file)]||'application/octet-stream';
       res.writeHead(200,{'Content-Type':mime,'Content-Length':stat.size,'Cache-Control':'no-store'});if(req.method==='HEAD')res.end();else fs.createReadStream(file).pipe(res);
-    }catch(e){if(!res.headersSent)json(res,e.status||500,{error:e.status?e.message:'服务暂时不可用，请稍后再试。'});else res.end();}
+    }catch(e){if(e.status>=500||!e.status)console.error(`[server] request failed (${e.status||500})`);if(!res.headersSent)json(res,e.status||500,{error:e.status?e.message:'服务暂时不可用，请稍后再试。'});else res.end();}
   });
   server.on('close',()=>db.close());return server;
 }

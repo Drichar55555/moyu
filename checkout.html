@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ed">
+  <meta name="description" content="墨愚课程订单与支付。">
+  <title>确认订单 — 墨愚</title>
+  <link rel="icon" href="assets/moyu-wordmark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="account.css">
+  <link rel="stylesheet" href="courses.css">
+  <script defer src="account-core.js"></script>
+  <script defer src="course-data.js"></script>
+  <script defer src="payment-client.js"></script>
+  <script defer src="checkout.js"></script>
+  <script defer src="courses.js"></script>
+</head>
+<body class="course-page">
+  <a class="skip-link" href="#main">跳转至结算</a>
+  <header class="course-header container">
+    <a class="brand" href="index.html" aria-label="墨愚首页"><span class="logo-type brand-wordmark">墨愚</span></a>
+    <nav aria-label="主导航"><a href="courses.html">全部课程</a><a href="orders.html">购买记录</a></nav>
+    <a href="account.html" class="account-link" data-account-link aria-label="登录或注册"><span class="account-avatar" aria-hidden="true">墨</span><span class="account-link-name">登录</span></a>
+  </header>
+  <main id="main" class="container checkout-main" tabindex="-1">
+    <a class="text-link" data-course-detail>← 返回课程</a>
+    <section id="course-error" class="course-empty" role="alert" hidden><h1>没有找到这门课程。</h1><p>课程链接无效或课程已移除，无法结算。</p><a class="button button-dark" href="courses.html">浏览全部课程 →</a></section>
+    <div data-course-surface hidden>
+    <div class="checkout-heading"><h1>确认订单</h1></div>
+    <p id="payment-feedback" class="payment-feedback" role="status" aria-live="polite"></p>
+    <div class="course-actions"><a id="checkout-login" class="button button-dark" hidden>登录后购买</a><button type="button" class="text-link" id="retry-checkout" hidden>刷新支付信息</button></div>
+    <div id="checkout-content" class="checkout-layout">
+      <section class="checkout-card" aria-labelledby="order-title">
+        <img class="checkout-course-image" data-course-image width="640" height="480" alt=""><h2 id="order-title" data-course-title></h2>
+        <p class="course-muted" data-course-subtitle></p>
+        <p class="course-muted" data-course-format></p>
+        <dl class="checkout-totals"><div class="checkout-total"><dt>应付金额</dt><dd data-course-price>—</dd></div></dl>
+      </section>
+      <section class="checkout-card" aria-labelledby="payment-title">
+        <h2 id="payment-title">支付方式</h2>
+        <form id="checkout-form">
+          <fieldset class="payment-methods" aria-labelledby="payment-title">
+            <label><input type="radio" name="payment" value="wechat" required disabled><span>微信支付<small></small></span></label>
+            <label><input type="radio" name="payment" value="alipay" required disabled><span>支付宝<small></small></span></label>
+          </fieldset>
+          <button type="submit" class="button button-dark checkout-submit" disabled>确认支付</button>
+        </form>
+      </section>
+    </div>
+    <section id="checkout-qr" class="checkout-result checkout-qr" aria-labelledby="qr-title" hidden>
+      <h2 id="qr-title" tabindex="-1">扫码支付</h2>
+      <p class="course-muted" data-course-title></p>
+      <p id="qr-method"></p>
+      <p class="course-price"><span data-course-price></span></p>
+      <img id="payment-qr-image" width="280" height="280" alt="订单支付二维码" hidden>
+      <p class="course-muted" id="qr-expiry"></p>
+      <p class="order-number" id="qr-order-id"></p>
+      <button class="button button-dark" type="button" id="check-payment">查询支付结果</button>
+      <button class="text-link" type="button" id="close-payment">关闭订单并更换方式</button>
+    </section>
+    <section id="checkout-result" class="checkout-result" aria-labelledby="result-title" hidden>
+      <h2 id="result-title" tabindex="-1">支付成功</h2>
+      <p class="course-muted">购买记录已保存。课程学习方式以授课安排为准。</p>
+      <dl class="checkout-totals"><div><dt>课程</dt><dd data-course-title></dd></div><div><dt>支付方式</dt><dd id="result-method"></dd></div><div><dt>订单金额</dt><dd data-course-price></dd></div><div><dt>订单号</dt><dd id="result-order-id"></dd></div></dl>
+      <div class="course-actions"><a class="button button-dark" href="orders.html">查看购买记录</a><a class="text-link" data-course-detail>返回课程</a></div>
+    </section>
+    </div>
+    <noscript><p class="course-notice">请启用 JavaScript 后刷新，以继续支付。</p></noscript>
+  </main>
+</body>
+</html>
