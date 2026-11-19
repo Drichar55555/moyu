@@ -95,44 +95,59 @@
     image.alt=`${course.title}课程封面`;
   });
   document.querySelector('[data-course-surface]').hidden=false;
-  const lessons=document.querySelector('.course-lessons');
-  if(lessons){
+  const story=document.querySelector('.course-story');
+  if(story){
     document.title=`${course.title} — 墨愚课程`;
-    if(course.teacher){
-      document.querySelector('#teaching').hidden=false;
-      document.querySelector('[href="#teaching"]').hidden=false;
-      const facts=document.querySelector('#course-facts');
-      [{label:'领读老师',value:course.teacher.name},...course.arrangements].forEach(fact=>{
-        const row=node('div');
-        row.append(node('dt','',fact.label),node('dd','',fact.value));
-        facts.append(row);
+    if(course.detail){
+      const heading=document.querySelector('#course-title');
+      heading.replaceChildren(node('span','course-title-main',course.detail.title),
+        node('span','course-title-separator','：'),node('span','course-title-series',course.detail.subtitle));
+    }
+    document.querySelector('[data-course-intro]').textContent=course.detail?.intro||course.description;
+    if(course.detail?.content){
+      course.detail.content.forEach(section=>{
+        const block=node('section','course-article-section');
+        if(section.title)block.append(node('h2','',section.title));
+        section.paragraphs.forEach(text=>block.append(node('p','',text)));
+        story.append(block);
       });
-      document.querySelector('#teacher-bio').textContent=course.teacher.bio;
+    }else{
+      story.append(node('p','',course.description));
     }
-    const outcomes=document.querySelector('.course-outcomes');
-    course.outcomes.forEach(outcome=>{
-      const article=node('article');
-      article.append(node('h3','',outcome.title),node('p','',outcome.text));
-      outcomes.append(article);
+    const summary=course.delivery
+      ?[
+        {label:'课时数',value:`${course.delivery.lessonCount}节`,detail:`每节${course.delivery.minutesPerLesson}分钟`},
+        {label:course.delivery.schedule?'上课时间':'课程分类',value:course.delivery.schedule||course.category},
+        {label:'课程形式',value:course.delivery.mode,detail:course.delivery.classSize}
+      ]
+      :[
+        {label:'课时数',value:`${course.lessons.length}节`,detail:`共${course.lessons.reduce((sum,lesson)=>sum+lesson.minutes,0)}分钟`},
+        {label:'课程分类',value:course.category},
+        {label:'课程形式',value:'录播'}
+      ];
+    summary.forEach(fact=>{
+      const item=node('div','course-summary-item');
+      const value=node('dd','',fact.value);
+      if(fact.detail)value.append(node('span','',fact.detail));
+      item.append(node('dt','',fact.label),value);
+      document.querySelector('.course-summary').append(item);
     });
-    if(course.outline){
-      document.querySelector('#syllabus-title').textContent='课程内容';
-      document.querySelector('[data-course-syllabus-label]').textContent='课程内容';
-      document.querySelector('[data-course-syllabus-action]').textContent='查看内容';
-    }
-    (course.outline||course.lessons).forEach((lesson,index)=>{
-      const details=node('details');
-      details.open=index===0;
-      const summary=node('summary');
-      if(course.outline){
-        summary.textContent=lesson.title;
+    if(course.teacher){
+      document.querySelector('.course-instructor').hidden=false;
+      document.querySelector('#instructor-name').textContent=course.teacher.displayName||course.teacher.name;
+      document.querySelector('#instructor-intro').textContent=course.teacher.bio;
+      const avatar=document.querySelector('.course-instructor-avatar');
+      if(course.teacher.image){
+        const image=node('img');
+        image.src=course.teacher.image;
+        image.alt=`${course.teacher.displayName||course.teacher.name}老师`;
+        image.width=198;
+        image.height=258;
+        avatar.append(image);
       }else{
-        summary.append(node('span','',String(index+1).padStart(2,'0')),document.createTextNode(lesson.title),node('small','',`${lesson.minutes} 分钟`));
+        avatar.setAttribute('aria-hidden','true');
       }
-      details.append(summary,node('p','',lesson.text));
-      lessons.append(details);
-    });
-    document.querySelector('#course-audience').append(...course.audience.map(text=>node('li','',text)));
+    }
     return;
   }
 

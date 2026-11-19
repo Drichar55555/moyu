@@ -182,7 +182,7 @@ function createMoyuServer({dbPath=path.join(ROOT,'.data','moyu.sqlite'),sendMail
       }
       if(!['GET','HEAD'].includes(req.method))throw failure(405,'不支持此操作。');
       const pathname=decodeURIComponent(url.pathname);const relative=pathname==='/'?'index.html':pathname.slice(1);
-      const pages=new Set(['index.html','activities.html','capsule.html','generations.html','account.html','courses.html','course.html','checkout.html','orders.html','payment-client.js','checkout.js','orders.js','courses.css','course-data.js','courses.js','styles.css','activities.css','account.css','app.js','activities.js','activity-data.js','account.js','account-core.js']);
+      const pages=new Set(['index.html','activities.html','capsule.html','generations.html','account.html','courses.html','course.html','checkout.html','orders.html','team.html','team.css','member.html','member.js','team-data.js','payment-client.js','checkout.js','orders.js','courses.css','course-detail.css','course-data.js','courses.js','styles.css','activities.css','account.css','app.js','activities.js','activity-data.js','account.js','account-core.js']);
       if(!pages.has(relative)&&!/^assets\/[\p{L}\p{N}_. /-]+$/u.test(relative))throw failure(404,'页面不存在。');
       const file=path.resolve(ROOT,relative);if(!file.startsWith(ROOT+path.sep)||relative.split('/').some(s=>s.startsWith('.')))throw failure(404,'页面不存在。');
       const stat=await fs.promises.stat(file).catch(()=>null);if(!stat?.isFile())throw failure(404,'页面不存在。');

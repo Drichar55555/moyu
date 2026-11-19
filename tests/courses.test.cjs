@@ -1,6 +1,8 @@
 const assert=require('node:assert/strict');
 const {once}=require('node:events');
 const {chromium}=require('playwright');
+const fs=require('node:fs/promises');
+const path=require('node:path');
 const {createMoyuServer}=require('../server.cjs');
 
 (async()=>{
@@ -32,8 +34,8 @@ const {createMoyuServer}=require('../server.cjs');
     const courses=await page.evaluate(()=>window.MoyuCourses);
     const honglou=courses.find(course=>course.id==='honglou-close-reading');
     assert.ok(courses.length>=7);assert.equal(new Set(courses.map(course=>course.id)).size,courses.length);
-    assert.equal(honglou.priceCents,360000);assert.equal(honglou.teacher.name,'卢家宁（老卢）');
-    assert.deepEqual(honglou.delivery,{mode:'网络小班',lessonCount:36,minutesPerLesson:60});
+    assert.equal(honglou.priceCents,1);assert.equal(honglou.teacher.name,'卢家宁（老卢）');
+    assert.deepEqual(honglou.delivery,{mode:'网络小班',lessonCount:36,minutesPerLesson:60,schedule:'周末',classSize:'6—12人'});
     assert.deepEqual(honglou.lessons,[]);
     assert.equal(await page.locator('.course-card').count(),courses.length);
     await checkConciseCopy();await checkLayout('catalog');
@@ -58,15 +60,72 @@ const {createMoyuServer}=require('../server.cjs');
       await checkConciseCopy();
       assert.equal(await page.locator('#course-title').textContent(),course.title);
       assert.equal(await page.locator('[data-course-checkout]').first().textContent(),'立即购买');
-      const syllabus=course.outline||course.lessons;
-      assert.equal(await page.locator('.course-lessons details').count(),syllabus.length);
+      assert.equal(await page.locator('.course-summary-item').count(),3);
+      assert.equal(await page.locator('.course-hero,.course-detail-image,.course-enroll').count(),0);
+      assert.equal(await page.locator('.course-purchase-bar').evaluate(element=>getComputedStyle(element).position),'fixed');
+      assert.equal(await page.locator('.course-instructor').isVisible(),Boolean(course.teacher));
+      assert.equal(await page.locator('details,summary,.course-extra,#outcomes,#syllabus,#audience,#teaching').count(),0);
+      assert.doesNotMatch(await page.locator('body').innerText(),/查看课程内容|学习收获|课程大纲/);
+      for(const width of [320,375,620,768,812,1024,1440]){
+        await page.setViewportSize({width,height:900});
+        const squares=await page.locator('.course-summary-item').evaluateAll(elements=>elements.map(element=>{
+          const rect=element.getBoundingClientRect();
+          return {width:rect.width,height:rect.height,contentHeight:element.scrollHeight,availableHeight:element.clientHeight};
+        }));
+        squares.forEach(square=>{
+          assert.ok(Math.abs(square.width-square.height)<=1,`information tile must be square at ${width}px`);
+          assert.ok(square.contentHeight<=square.availableHeight+1,`tile text must fit at ${width}px`);
+        });
+      }
+      if(course.id===honglou.id){
+        assert.equal(await page.locator('.course-title-main').textContent(),'小观红楼');
+        assert.equal(await page.locator('.course-title-series').textContent(),'红楼精读系列课程一');
+        assert.equal(await page.locator('#instructor-name').textContent(),'卢家宁');
+        const portrait=page.locator('.course-instructor-avatar img');
+        assert.equal(await portrait.getAttribute('src'),'assets/courses/lu-jianing.jpg');
+        assert.equal(await portrait.getAttribute('alt'),'卢家宁老师');
+        await page.waitForFunction(image=>image.complete&&image.naturalWidth===198,await portrait.elementHandle());
+        assert.equal(await page.locator('#instructor-intro').textContent(),honglou.teacher.bio);
+        assert.match(await page.locator('#instructor-intro').textContent(),/看闲书偏近代史.*愿共飨众稚子/);
+        const paragraphs=honglou.detail.content.flatMap(section=>section.paragraphs);
+        assert.deepEqual(await page.locator('.course-story p').allTextContents(),paragraphs,'authorized article text must be visible without expanding');
+        assert.match(await page.locator('.course-story').innerText(),/不赶进度，不求效率，重阅读，重体悟/);
+        assert.equal(await page.locator('.course-story img').count(),0,'course article is plain text');
+        assert.match(await page.locator('.course-summary').textContent(),/36节每节60分钟上课时间周末课程形式网络小班6—12人/);
+        await page.setViewportSize({width:768,height:1429});
+        await page.evaluate(()=>document.fonts.ready);
+        const layout=await page.evaluate(()=>{
+          const box=selector=>document.querySelector(selector).getBoundingClientRect().toJSON();
+          return {title:box('#course-title'),avatar:box('.course-instructor-avatar'),tiles:box('.course-summary'),buy:box('.course-purchase-bar'),
+            background:getComputedStyle(document.body).backgroundColor};
+        });
+        assert.equal(layout.background,'rgb(255, 255, 255)');
+        assert.ok(layout.title.top>=180&&layout.title.top<=240,'reference heading has generous top whitespace');
+        assert.equal(layout.avatar.width,136);
+        assert.ok(Math.abs(layout.avatar.x+layout.avatar.width/2-384)<=1,'teacher avatar is centered');
+        assert.ok(layout.tiles.top>layout.avatar.bottom,'summary follows the complete teacher profile');
+        assert.ok(Math.abs(layout.tiles.height-(layout.tiles.width-16)/3)<=1);
+        assert.equal(layout.buy.bottom,1429);
+        const out=path.join(__dirname,'../test-results');await fs.mkdir(out,{recursive:true});
+        await page.screenshot({path:path.join(out,'course-detail-reference.png'),fullPage:true});
+        await page.setViewportSize({width:375,height:812});
+        await page.screenshot({path:path.join(out,'course-detail-mobile.png'),fullPage:true});
+      }
       if(course.id===honglou.id){
         const text=await page.locator('[data-course-surface]').innerText();
-        for(const fact of [/36 节 · 每节 60 分钟 · 网络小班/,/卢家宁（老卢）/,/6人成班，最多12人/,/14周岁以上/,/约第1—10回/])assert.match(text,fact);
+        for(const fact of [/卢家宁/,/6人成班，上限12人/,/14周岁以上/,/约1—10章节/])assert.match(text,fact);
         assert.doesNotMatch(text,/录播/);await checkLayout('honglou');
+        for(const width of [320,375,768,1440]){
+          await page.setViewportSize({width,height:900});
+          const purchase=await page.locator('[data-course-checkout]').boundingBox();
+          assert.ok(purchase.x>=0&&purchase.x+purchase.width<=width&&purchase.y>=0&&purchase.y+purchase.height<=900);
+          assert.ok(purchase.height>=44,'purchase touch target stays usable');
+          await page.evaluate(()=>window.scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'}));
+          const end=await page.locator('.course-story p').last().boundingBox();
+          const bar=await page.locator('.course-purchase-bar').boundingBox();
+          assert.ok(end.y+end.height<=bar.y,'last paragraph can scroll clear of the fixed purchase bar');
+        }
       }
-      await page.locator('.course-lessons summary').nth(1).click();
-      assert.equal(await page.locator('.course-lessons details').nth(1).getAttribute('open'),'');
       await page.locator('[data-course-checkout]').first().click();await page.waitForURL(`${base}/checkout.html?id=${course.id}`);
       await page.locator('#payment-feedback').filter({hasText:'登录后'}).waitFor();
       assert.equal(await page.locator('.checkout-total [data-course-price]').textContent(),money(course.priceCents));

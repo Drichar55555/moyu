@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="墨愚团队成员介绍。">
+  <title>成员介绍 — 墨愚</title>
+  <link rel="icon" href="assets/moyu-wordmark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="team.css">
+  <script defer src="team-data.js"></script>
+  <script defer src="member.js"></script>
+</head>
+<body class="member-page">
+  <a class="skip-link" href="#main">跳转至成员介绍</a>
+  <main id="main" class="member-profile-main" tabindex="-1">
+    <section id="member-error" role="alert" hidden><h1>没有找到这位成员。</h1><p>请返回公司架构重新选择。</p><a class="text-link" href="team.html">← 公司架构</a></section>
+    <article id="member-profile" hidden>
+      <div class="member-visual" aria-hidden="true">
+        <img class="member-backdrop" id="profile-backdrop" alt="" width="133" height="64" hidden>
+        <picture class="member-picture">
+          <source id="profile-mobile-image" media="(max-aspect-ratio: 1/1), (max-width: 760px)">
+          <img id="profile-image" src="assets/team/avatar-placeholder.svg" alt="" width="633" height="768">
+        </picture>
+        <div class="member-gradient"></div>
+      </div>
+      <a id="member-return" class="member-profile-return" href="team.html" aria-label="返回公司架构">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 4-8 8 8 8"/></svg>
+        <span class="member-role-label">墨愚<span id="profile-role"></span></span>
+      </a>
+      <div class="member-copy">
+        <h1 id="profile-name" class="member-profile-name"></h1>
+        <div class="member-biography">
+          <p class="member-motto" id="profile-motto"></p>
+          <p class="member-experience" id="profile-experience"></p>
+          <p class="member-example-note" id="profile-example" hidden>示例文案，非本人真实履历。</p>
+        </div>
+      </div>
+    </article>
+    <noscript><p>请启用 JavaScript 查看成员介绍。</p><a class="text-link" href="team.html">← 公司架构</a></noscript>
+  </main>
+</body>
+</html>

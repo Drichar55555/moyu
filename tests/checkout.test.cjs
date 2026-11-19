@@ -62,7 +62,8 @@ const {failure}=require('../payment-providers.cjs');
       await page.locator('#check-payment').click();await page.locator('#checkout-result').waitFor();
       assert.equal(await page.locator('#result-title').textContent(),'支付成功');
       assert.equal(await page.locator('#result-order-id').textContent(),id);
-      assert.match(await page.locator('#checkout-result').textContent(),/3,600\.00/);
+      assert.match(await page.locator('.checkout-total [data-course-price]').textContent(),/0\.01/);
+      assert.match(await page.locator('#checkout-result').textContent(),/0\.01/);
       for(const width of [320,375,768,1440]){
         await page.setViewportSize({width,height:900});
         assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);

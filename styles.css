@@ -5,6 +5,7 @@
 @font-face{font-family:YuYang;src:url('assets/fonts/%E7%AB%99%E9%85%B7%E4%BB%93%E8%80%B3%E6%B8%94%E9%98%B3%E4%BD%93-W04.ttf') format('truetype');font-display:swap;font-weight:600}
 :root{--paper:#f5f3ed;--ink:#262924;--muted:#6c6d64;--red:#934c3d;--line:#d8d7ce;--surface:#ebe9e1;--white:#fff;--dark:#292d28;--on-dark:#efeee4;--on-dark-muted:#b7bbae;--logo:YuFan,serif;--title:YuYang,'Songti SC',serif;--body:YuYang,'PingFang SC',sans-serif;--ease:cubic-bezier(.22,1,.36,1)}
 .logo-type{font-family:var(--logo)}
+.about-actions{display:flex;align-items:center;flex-wrap:wrap;column-gap:32px}
 .brand-wordmark{display:inline-block;font-size:36px;line-height:1.25;letter-spacing:4px;white-space:nowrap}
 .about-brand .brand-wordmark{font-size:48px}
 .record-label .record-wordmark{font-size:23px;letter-spacing:2px;line-height:1.4}

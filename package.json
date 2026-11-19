@@ -5,6 +5,7 @@
   "description": "墨愚官网、活动 Demo 与邮箱验证账号服务",
   "engines": {"node": ">=22.16.0"},
   "scripts": {
+    "test:team": "node tests/team.test.cjs",
     "test:payments": "node tests/payment-providers.test.cjs && node tests/payments.test.cjs && node tests/checkout.test.cjs",
     "test:courses": "node tests/courses.test.cjs",
     "test:motion": "node tests/rank-motion.test.cjs",
